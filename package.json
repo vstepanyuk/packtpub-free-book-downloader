@@ -1,0 +1,19 @@
+{
+  "name": "ebooks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "0.20.0",
+    "debug": "2.2.0",
+    "nedb": "1.8.0",
+    "request": "2.72.0",
+    "request-promise": "3.0.0"
+  }
+}
