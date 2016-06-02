@@ -7,6 +7,19 @@ const ora      = require('ora')
 const promises  = []
 const questions = []
 
+if (argv.help || argv.h) {
+  console.log(`
+Usage: packtpub-free --user=<packt username> --password=<packt password> --output=<output directory>
+  
+  -u, --user      PACKT publishing username (Registration: https://www.packtpub.com/)
+  -p, --password  PACKT publishing password
+  -o, --output    Downloads directory
+
+  `)
+
+  process.exit(0)
+}
+
 if (argv.user || argv.u) {
   promises.push(Promise.resolve({ user: argv.user || argv.u }))
 } else {
@@ -52,4 +65,5 @@ Promise.all(promises)
   .catch(err => {
     spinner.stop()
     console.error(chalk.bgRed.white(` ${err.message} `))
+    process.exit(1)
   })

@@ -1,6 +1,6 @@
 {
   "name": "packtpub-free",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Download free PACKT publishing books",
   "author": "Vitaliy Stepanyuk <vstepanyuk@me.com>",
   "license": "ISC",
