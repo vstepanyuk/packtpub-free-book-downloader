@@ -1,13 +1,8 @@
 {
-  "name": "ebooks",
+  "name": "packtpub-free",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
+  "description": "Download free PACKT publishing books",
+  "author": "Vitaliy Stepanyuk <vstepanyuk@me.com>",
   "license": "ISC",
   "dependencies": {
     "chalk": "1.1.3",
@@ -26,5 +21,13 @@
   },
   "bin": {
     "packtpub-free": "bin/packtpub-free"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vstepanyuk/packtpub-free-book-downloader.git"
+  },
+  "homepage": "https://github.com/vstepanyuk/packtpub-free-book-downloader",
+  "bugs": {
+    "url": "https://github.com/vstepanyuk/packtpub-free-book-downloader/issues"
   }
 }

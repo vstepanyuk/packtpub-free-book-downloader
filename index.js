@@ -19,7 +19,7 @@ if (argv.password || argv.p) {
   questions.push({ type: 'password', name: 'password', message: 'PACKT publishing password' })
 }
 
-const output = argv.output || process.cwd()
+const output = argv.output || argv.o || process.cwd()
 
 if (questions.length) {
   promises.push(inquirer.prompt(questions))
