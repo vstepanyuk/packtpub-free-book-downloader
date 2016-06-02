@@ -1,23 +1,55 @@
-const Client    = require('./client')
-const Datastore = require('nedb')
-const config    = require('./config')
+const Client   = require('./client')
+const inquirer = require('inquirer') 
+const argv     = require('minimist')(process.argv.slice(2))
+const chalk    = require('chalk')
+const ora      = require('ora')
 
-const db = new Datastore({ filename: `${__dirname}/books.db`, autoload: true })
-const client = new Client(config)
+const promises  = []
+const questions = []
 
-client.fetchLast().then(book => new Promise((res, rej) => {
-    db.findOne({ title: book.title }, (err, result) => {
-        if (err) return rej(err)
-        if (result) return rej('Book is downloaded already')
-        res(book)
-    })
-}))
-.then(book => client.download(book, process.argv[2] || `${__dirname}/books/`))
-.then(downloaded => new Promise((res, rej) => {
-    console.log("Downloaded", downloaded)
-    db.insert(downloaded, (err, result) => {
-        if (err) return rej(err)
-        res(result)
-    })
-}))
-.catch(error => console.error('Error:', error))
+if (argv.user || argv.u) {
+  promises.push(Promise.resolve({ user: argv.user || argv.u }))
+} else {
+  questions.push({ type: 'input', name: 'user', message: 'PACKT publishing user' })
+}
+
+if (argv.password || argv.p) {
+  promises.push(Promise.resolve({ password: argv.password || argv.p }))
+} else {
+  questions.push({ type: 'password', name: 'password', message: 'PACKT publishing password' })
+}
+
+const output = argv.output || process.cwd()
+
+if (questions.length) {
+  promises.push(inquirer.prompt(questions))
+}
+
+let client = null
+let spinner = ora()
+
+Promise.all(promises)
+  .then(results => results.reduce((curr, next) => Object.assign(curr, next), {}))
+  .then(credentials => {
+    client = new Client(credentials)
+    spinner.text = 'Authentication...'
+    spinner.start()
+
+    return client.fetchLast()
+  })
+  .then(book => {
+    spinner.stop()
+    console.log(chalk.bgGreen.black(` Latest book ${book.title} `))
+    spinner.text = 'Downloading...'
+    spinner.start()
+
+    return client.download(book, output)
+  })
+  .then(downloaded => {
+    spinner.stop()
+    downloaded.files.forEach(book => console.log(chalk.green('Downloaded: %s'), book))
+  })
+  .catch(err => {
+    spinner.stop()
+    console.error(chalk.bgRed.white(` ${err.message} `))
+  })

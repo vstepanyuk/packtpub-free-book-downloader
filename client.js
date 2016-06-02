@@ -20,7 +20,7 @@ class Client extends EventEmitter {
                 .serializeArray()
                 .reduce((prev, curr) => Object.assign(prev, {[curr.name]: curr.value}), {})
 
-            data.email    = this.config.email
+            data.email    = this.config.user
             data.password = this.config.password
             data.op       = 'Login'
 
